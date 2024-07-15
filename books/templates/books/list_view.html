@@ -6,13 +6,16 @@
     <title>Books</title>
 </head>
 <body>
-    {% for item in details %}
-        Title : {{ item.title }}<br>
-        Price : {{ item.price }}
+    {% for book in details %}
+        Title : <a href={{book}}> {{ book.title }} </a><br>
+        Price : {{ book.price }}
         <div class="details">
-            publisher : {{ item.publisher }}<br>
-            publication_date : {{ item.publication_date }}<br>
-            pages : {{ item.pages }}
+            publisher : {{ book.publisher }}<br>
+            Author(s) : {% for author in book.authors.all %}
+                            <td>{{ author }} ,  
+                        {% endfor %}<br>
+            publication_date : {{ book.publication_date }}<br>
+            pages : {{ book.pages }}
         </div>
         <div class="dsp" style="display: none;"><p>{{display}}</p></div>
         <script>
@@ -24,6 +27,6 @@
         </script>
         <hr>
     {% endfor %}
-
+    <a href="shopping">List of Books</a>
 </body>
 </html>

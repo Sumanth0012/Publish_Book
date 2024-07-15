@@ -8,6 +8,40 @@ from .models import Book
 from .models import Author
 from .models import Publisher
 
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView,UpdateView,DeleteView
+from django.urls import reverse_lazy    
+
+class list(ListView):
+    model = Book
+    template_name = "books/list_view.html"
+    context_object_name = "details"
+class detail(DetailView):
+    model = Book
+    template_name = "books/list_view.html"
+    context_object_name = "details"
+    pk_url_kwarg = "custom_pk"
+class create(CreateView):
+    model = Book
+    fields = ["title", "authors", "publisher", "publication_date"]
+    success_url = reverse_lazy('books')
+    template_name = "books/index.html"
+    form_class = BooksForm
+class update(UpdateView):
+    model = Book
+    fields = ["title", "authors", "publisher", "publication_date"]
+    template_name = "books/index.html"
+    success_url = reverse_lazy('books')
+class delete(DeleteView):
+    model = Book
+    template_name = "books/index.html"
+    context_object_name = 'details'
+    success_url = reverse_lazy('books')
+    pk_url_kwarg = 'custom_pk'
+
+    
+
 # Create your views here.
 def lib(request):
     context = {}
@@ -32,15 +66,15 @@ def list_view(request):
     context["display"] = "none"
     return render(request, 'books/list_view.html',context)
 
-def detailed_view(request,id):
+def detailed_view(request,title):
     context = {}
-    context["details"] = Book.objects.filter(id=id)
+    context["details"] = Book.objects.filter(title=title)
     context["display"] = "block"
     return render(request, 'books/list_view.html',context)
 
-def update_view(request,id):
+def update_view(request,title):
     context = {}
-    obj = get_object_or_404(Book,id=id)
+    obj = get_object_or_404(Book,title=title)
 
     form3 = BooksForm(request.POST or None,instance=obj) 
     if form3.is_valid(): 
@@ -50,9 +84,9 @@ def update_view(request,id):
 
     return render(request, 'books/index.html',context)
 
-def delete_view(request,id):
+def delete_view(request,title):
     context = {}
-    obj = get_object_or_404(Book,id=id)
+    obj = get_object_or_404(Book,title=title)
 
     form3 = BooksForm(request.POST or None,instance=obj) 
     if request.method == "POST":

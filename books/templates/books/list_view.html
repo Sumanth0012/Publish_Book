@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+</head>
+<body>
+    {% for item in details %}
+        Title : {{ item.title }}<br>
+        Price : {{ item.price }}
+        <div class="details">
+            publisher : {{ item.publisher }}<br>
+            publication_date : {{ item.publication_date }}<br>
+            pages : {{ item.pages }}
+        </div>
+        <div class="dsp" style="display: none;"><p>{{display}}</p></div>
+        <script>
+            y = document.getElementsByClassName('dsp')[0].textContent
+            x = document.getElementsByClassName('details')
+            for (let i = 0; i < x.length; i++) {
+                x[i].style.display = y;
+            }
+        </script>
+        <hr>
+    {% endfor %}
+
+</body>
+</html>

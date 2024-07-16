@@ -6,12 +6,11 @@
     <title>Books</title>
 </head>
 <body>
-    <h2>Add a Book</h2>
     <form method="POST" enctype="multipart/form-data"> 
         {% csrf_token %}
-        {{ form3.as_p }} 
+        {{ form.as_p }} 
         <input type="submit" value="Submit"> 
     </form> 
-    <h1><a href="/shopping">Go to List_View</a></h1>
+    <h1><a href="/shop">Go to List_View</a></h1>
 </body>
 </html>

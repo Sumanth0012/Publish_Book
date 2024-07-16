@@ -19,12 +19,11 @@ class list(ListView):
     context_object_name = "details"
 class detail(DetailView):
     model = Book
-    template_name = "books/list_view.html"
-    context_object_name = "details"
-    pk_url_kwarg = "custom_pk"
+    template_name = "books/class_detail.html"
+    context_object_name = "book"
+    pk_url_kwarg = "pk"
 class create(CreateView):
     model = Book
-    fields = ["title", "authors", "publisher", "publication_date"]
     success_url = reverse_lazy('books')
     template_name = "books/index.html"
     form_class = BooksForm
@@ -47,16 +46,16 @@ def lib(request):
     context = {}
     form1 = AuthorForm(request.POST or None) 
     form2 = PublisherForm(request.POST or None) 
-    form3 = BooksForm(request.POST or None) 
+    form = BooksForm(request.POST or None) 
     if form1.is_valid(): 
         form1.save() 
     context['form1'] = form1
     if form2.is_valid(): 
         form2.save() 
     context['form2'] = form2
-    if form3.is_valid(): 
-        form3.save() 
-    context['form3'] = form3
+    if form.is_valid(): 
+        form.save() 
+    context['form'] = form
     # books = Book.objects.filter(title__contains='Book')
     return render(request, 'books/index.html',context)
 
@@ -66,29 +65,29 @@ def list_view(request):
     context["display"] = "none"
     return render(request, 'books/list_view.html',context)
 
-def detailed_view(request,title):
+def detailed_view(request,id):
     context = {}
-    context["details"] = Book.objects.filter(title=title)
+    context["details"] = Book.objects.filter(id=id)
     context["display"] = "block"
     return render(request, 'books/list_view.html',context)
 
-def update_view(request,title):
+def update_view(request,id):
     context = {}
-    obj = get_object_or_404(Book,title=title)
+    obj = get_object_or_404(Book,id=id)
 
-    form3 = BooksForm(request.POST or None,instance=obj) 
-    if form3.is_valid(): 
-        form3.save() 
+    form = BooksForm(request.POST or None,instance=obj) 
+    if form.is_valid(): 
+        form.save() 
         return HttpResponseRedirect("/"+id)
-    context['form3'] = form3
+    context['form'] = form
 
     return render(request, 'books/index.html',context)
 
-def delete_view(request,title):
+def delete_view(request,id):
     context = {}
-    obj = get_object_or_404(Book,title=title)
+    obj = get_object_or_404(Book,id=id)
 
-    form3 = BooksForm(request.POST or None,instance=obj) 
+    form = BooksForm(request.POST or None,instance=obj) 
     if request.method == "POST":
         obj.delete()
         return HttpResponseRedirect("/")

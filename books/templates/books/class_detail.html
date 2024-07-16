@@ -6,8 +6,7 @@
     <title>Books</title>
 </head>
 <body>
-    {% for book in details %}
-        Title : <a href=/./{{book.id}}> {{ book.title }} </a><br>
+        Title : {{ book.title }}<br>
         Price : {{ book.price }}
         <div class="details">
             publisher : {{ book.publisher }}<br>
@@ -26,7 +25,6 @@
             }
         </script>
         <hr>
-    {% endfor %}
     <a href="/./shop">List of Books</a>
 </body>
 </html>
